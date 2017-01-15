@@ -1,0 +1,15 @@
+<?xml version = "1.0" encoding = "ISO-8859-1"?>
+
+<!DOCTYPE editores SYSTEM "dtds/editores.dtd">
+
+<editores>
+	<editor url="textEditor.jsp">
+		<formateador clase="org.openxava.formatters.UpperCaseFormatter"/>
+		<para-tipo tipo="java.lang.String"/>
+	</editor>
+	
+	<editor url="textEditor.jsp">
+		<formateador clase="com.sistemaempresarialox.formateadores.FormateadorTextoSensibleMayusculas"/>
+		<para-estereotipo estereotipo="TEXTO_SENSIBLE_MAYUSCULAS"/>
+	</editor>
+</editores>

@@ -1,0 +1,42 @@
+<?xml version = "1.0" encoding = "ISO-8859-1"?>
+
+<!DOCTYPE controladores SYSTEM "dtds/controladores.dtd">
+
+<controladores>
+	<var-entorno nombre="XAVA_SEARCH_ACTION" 
+				 valor="GeneralSistemaEmpresarialOX.buscarMostrandoAccionBorrado"/>
+	
+	<controlador nombre="GeneralSistemaEmpresarialOX">
+		<hereda-de controlador="Typical"/>
+		
+		<accion nombre="buscarMostrandoAccionBorrado" oculta="true"
+				clase="com.sistemaempresarialox.acciones.general.AccionBuscarMostrandoAccionBorrado"/>
+		
+		<accion nombre="activar" modo="detail" confirmar="true"
+				clase="com.sistemaempresarialox.acciones.general.AccionActualizarEstadoEntidadNoEliminable"
+				icono="check" oculta="true"
+				atajo-de-teclado="Control D"/>
+				
+		<accion nombre="inactivar" modo="detail" confirmar="true"
+				clase="com.sistemaempresarialox.acciones.general.AccionActualizarEstadoEntidadNoEliminable"
+				icono="close" oculta="true"
+				atajo-de-teclado="Control D"/>
+				
+		<accion nombre="deleteSelected" modo="list" confirmar="true"
+				clase="com.sistemaempresarialox.acciones.general.AccionEliminarEntidadesSeleccionadas"
+				atajo-de-teclado="Control D"/>
+		
+		<accion nombre="deleteRow" modo="list" confirmar="true"
+				clase="com.sistemaempresarialox.acciones.general.AccionEliminarEntidadesSeleccionadas"
+				imagen="images/delete.gif"
+				icono="delete"
+				en-cada-fila="true"/>
+	</controlador>
+	
+	<controlador nombre="EntidadNoEliminable">
+		<accion nombre="buscarMostrandoSoloActivos" oculta="true" 
+				clase="com.sistemaempresarialox.acciones.entidadnoeliminable.AccionBusquedadDeReferenciasDeEntidadesSoloActivas"
+				imagen="images/search.gif"
+				icono="magnify"/>
+	</controlador>
+</controladores>
