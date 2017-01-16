@@ -30,11 +30,13 @@ public abstract class EntidadBaseNoEliminable extends EntidadBase {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static EstadoEntidad obtenerEstadoEntidad(Class claseEntidadAEliminar, long id){
+	public static EstadoEntidad obtenerEstadoEntidad(
+			Class claseEntidadBaseNoEliminable, long id)
+	{
 		CriteriaBuilder criteriaBuilder = XPersistence.getManager().getCriteriaBuilder();
-		CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(claseEntidadAEliminar);
-
-		Root root = criteriaQuery.from(claseEntidadAEliminar);
+		CriteriaQuery criteriaQuery = criteriaBuilder.createQuery(claseEntidadBaseNoEliminable);
+		
+		Root root = criteriaQuery.from(claseEntidadBaseNoEliminable);
 		Predicate whereIdEntidad = criteriaBuilder.equal(root.get(NOMBRE_COLUMNA_PRIMARY_KEY), id);
 		criteriaQuery.select(root.get(NOMBRE_COLUMNA_ESTADO))
 					 .where(whereIdEntidad);
