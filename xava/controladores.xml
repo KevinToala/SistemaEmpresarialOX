@@ -39,4 +39,30 @@
 				imagen="images/search.gif"
 				icono="magnify"/>
 	</controlador>
+	
+	<controlador nombre="Mode">
+		<accion nombre="initList" al-iniciar="true"
+			clase="org.openxava.actions.InitListAction"
+			oculta="true"/>
+		<accion nombre="detailAndFirst"
+			clase="com.sistemaempresarialox.acciones.AccionIrADetalle"
+			atajo-de-teclado="F8">
+			<poner propiedad="nextAction" valor="Navigation.first"/>
+		</accion>
+		<accion nombre="list"
+			clase="org.openxava.actions.GoListAction"
+			atajo-de-teclado="F9"/>
+		<accion nombre="split"
+			clase="org.openxava.actions.GoSplitAction"
+			atajo-de-teclado="F10"/>
+		<accion nombre="detail"
+			oculta="true"
+			clase="com.sistemaempresarialox.acciones.AccionIrADetalle"/>
+		<accion nombre="initView"
+			clase="org.openxava.actions.SetEditableAction"
+			oculta="true" al-iniciar="true">
+			<poner propiedad="editable" valor="false"/>
+			<poner propiedad="keyEditable" valor="false"/>
+		</accion>
+	</controlador>
 </controladores>
