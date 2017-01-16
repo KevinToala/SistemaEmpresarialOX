@@ -12,7 +12,8 @@ import com.sistemaempresarialox.util.*;
 import com.sistemaempresarialox.util.enumeradores.*;
 
 public class ProvinciaTest extends EntidadBaseNoEliminableModuleTestBase {
-	private Pais pais;
+	private Pais pais1;
+	private Pais pais2;
 	
 	public ProvinciaTest(String nombrePrueba){
 		super(nombrePrueba, "Provincia");
@@ -26,7 +27,7 @@ public class ProvinciaTest extends EntidadBaseNoEliminableModuleTestBase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		borrarPais();
+		borrarPaisDePrueba();
 	}
 	
 	@Override
@@ -36,26 +37,26 @@ public class ProvinciaTest extends EntidadBaseNoEliminableModuleTestBase {
 
 	@Override
 	protected List<EntidadBaseNoEliminable> crearEntidadesBaseNoEliminable(){
-		crearPais();
+		crearPaisesDePrueba();
 		
 		List<EntidadBaseNoEliminable> provincias = new ArrayList<>();
 		
 		Provincia provincia1 = new Provincia();
 		provincia1.setNombre("provincia1");
 		provincia1.setCodigoSistemaTributario(001);
-		provincia1.setPais(pais);
+		provincia1.setPais(pais1);
 		provincia1.setEstado(EstadoEntidad.ACTIVO);
 		
 		Provincia provincia2 = new Provincia();
 		provincia2.setNombre("provincia2");
 		provincia2.setCodigoSistemaTributario(002);
-		provincia2.setPais(pais);
+		provincia2.setPais(pais2);
 		provincia2.setEstado(EstadoEntidad.ACTIVO);
 		
 		Provincia provincia3 = new Provincia();
 		provincia3.setNombre("provincia3");
 		provincia3.setCodigoSistemaTributario(003);
-		provincia3.setPais(pais);
+		provincia3.setPais(pais1);
 		provincia3.setEstado(EstadoEntidad.ACTIVO);
 		
 		provincias.add(provincia1);
@@ -65,30 +66,61 @@ public class ProvinciaTest extends EntidadBaseNoEliminableModuleTestBase {
 		return provincias;
 	}
 	
-	private void crearPais(){
-		pais = new Pais();
-		pais.setNombre("pais prueba");
-		pais.setCodigoISO("pp");
-		pais.setCodigoSistemaTributario(001);
-		pais.setEstado(EstadoEntidad.ACTIVO);
+	private void crearPaisesDePrueba(){
+		pais1 = new Pais();
+		pais1.setNombre("pais 1");
+		pais1.setCodigoISO("p1");
+		pais1.setCodigoSistemaTributario(001);
+		pais1.setEstado(EstadoEntidad.ACTIVO);
 		
-		getManager().persist(pais);
+		pais2 = new Pais();
+		pais2.setNombre("pais 2");
+		pais2.setCodigoISO("p2");
+		pais2.setCodigoSistemaTributario(002);
+		pais2.setEstado(EstadoEntidad.ACTIVO);
+		
+		getManager().persist(pais1);
+		getManager().persist(pais2);
 	}
 	
-	private void borrarPais(){
-		EntidadUtil.borrarEntidadesDesasociadas(pais);
+	private void borrarPaisDePrueba(){
+		EntidadUtil.borrarEntidadesDesasociadas(pais1, pais2);
 		commit();
 	}
 	
-	public void testCrearProvincia() throws Exception {
-		execute("CRUD.new");
-		setValue("nombre", "provincia prueba");
-		setValue("codigoSistemaTributario", "999");
-		setValue("pais.id", String.valueOf(pais.getId()));
-		execute("CRUD.save");
-		assertNoErrors();
+	public void testCrearYModificarProvincia() throws Exception {
+		crearPais();
+		cambiarPaisDeProvincia();
 		
 		borrarEntidadBaseNoEliminableCreadaEnPantalla(
 				"nombre", "provincia prueba", Provincia.class);
+	}
+
+	private void crearPais() throws Exception {
+		execute("CRUD.new");
+		setValue("nombre", "provincia prueba");
+		setValue("codigoSistemaTributario", "999");
+		setValue("pais.id", String.valueOf(pais1.getId()));
+		execute("CRUD.save");
+		assertNoErrors();
+	}
+	
+	private void cambiarPaisDeProvincia() throws Exception {
+		setValue("nombre", "provincia prueba");
+		execute("CRUD.refresh");
+		assertNoErrors();
+		
+		setValue("pais.id", String.valueOf(pais2.getId()));
+		execute("CRUD.save");
+		assertNoErrors();
+		
+		verificarCambioPaisDeProvincia();
+	}
+
+	private void verificarCambioPaisDeProvincia() throws Exception {
+		setValue("nombre", "provincia prueba");
+		execute("CRUD.refresh");
+		assertNoErrors();
+		assertValue("pais.id", String.valueOf(pais2.getId()));
 	}
 }
