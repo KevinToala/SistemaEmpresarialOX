@@ -11,10 +11,10 @@ import com.sistemaempresarialox.base.modelo.*;
 import com.sistemaempresarialox.util.*;
 import com.sistemaempresarialox.util.enumeradores.*;
 
-public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBase {
-	private EntidadBaseNoEliminable entidad1;
-	private EntidadBaseNoEliminable entidad2;
-	private EntidadBaseNoEliminable entidad3;
+public abstract class EntidadBaseNoEliminableConEstadoModuleTestBase extends ModuleTestBase {
+	private EntidadBaseNoEliminableConEstado entidad1;
+	private EntidadBaseNoEliminableConEstado entidad2;
+	private EntidadBaseNoEliminableConEstado entidad3;
 	
 	private int filaEntidad1;
 	private int filaEntidad2;
@@ -22,19 +22,19 @@ public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBa
 	
 	private boolean columnaEstadoVisible;
 	
-	public EntidadBaseNoEliminableModuleTestBase(String nombrePrueba, String modulo){
+	public EntidadBaseNoEliminableConEstadoModuleTestBase(String nombrePrueba, String modulo){
 		super(nombrePrueba, "SistemaEmpresarialOX", modulo);
 	}
 	
 	protected abstract String obtenerNombreCalificadoModulo();
 	
-	protected abstract List<EntidadBaseNoEliminable> crearEntidadesBaseNoEliminable();
+	protected abstract List<EntidadBaseNoEliminableConEstado> crearEntidadesBaseNoEliminable();
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		List<EntidadBaseNoEliminable> entidades = crearEntidadesBaseNoEliminable();
+		List<EntidadBaseNoEliminableConEstado> entidades = crearEntidadesBaseNoEliminable();
 		
 		if(entidades.isEmpty() || entidades.size() < 3){
 			throw new Exception("Lista de entidades incompletas, para poder realizar la prueba");
@@ -60,7 +60,7 @@ public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBa
 	}
 	
 	public void testInactivarActivarEntidadEnModoDetalle() throws Exception {
-		execute("CRUD.new");
+		execute("GeneralSistemaEmpresarialOX.new");
 		verificarValoresPorDefecto();
 		inactivarEntidad();
 		activarEntidad();
@@ -113,13 +113,13 @@ public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBa
 	public void testObtenerEstadoEntidad() throws Exception {
 		long idEntidad = entidad1.getId();
 		Class<?> claseEntidad = Class.forName(obtenerNombreCalificadoModulo());
-		EstadoEntidad estadoActualEntidad = EntidadBaseNoEliminable.obtenerEstadoEntidad(claseEntidad, idEntidad);
+		EstadoEntidad estadoActualEntidad = EntidadBaseNoEliminableConEstado.obtenerEstadoEntidad(claseEntidad, idEntidad);
 		
 		assertTrue(estadoActualEntidad.equals(EstadoEntidad.ACTIVO));
 	}
 	
 	public void testInactivarActivarEntidadesEnModoLista() throws Exception {
-		execute("CRUD.new");
+		execute("GeneralSistemaEmpresarialOX.new");
 		execute("Mode.list");
 		
 		determinarSiColumnaEstadoEstaVisibleEnModoLista();
@@ -179,7 +179,7 @@ public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBa
 	}
 	
 	private void cambiarEstadoEntidadesSeleccionadas() throws Exception {
-		execute("GeneralSistemaEmpresarialOX.deleteSelected");
+		execute("GeneralSistemaEmpresarialOX.actualizarEstadoSeleccionados");
 		assertNoErrors();
 	}
 	
@@ -201,7 +201,7 @@ public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBa
 	private void cambiarEstadoEntidad(String estado) throws Exception {
 		checkRow(filaEntidad2);
 		
-		execute("GeneralSistemaEmpresarialOX.deleteRow");
+		execute("GeneralSistemaEmpresarialOX.actualizarEstadoFila");
 		assertNoErrors();
 		
 		setearFilaDeEntidadesCreadasEnLista();
@@ -210,7 +210,7 @@ public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBa
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private void verificarEstadoEntidad(EntidadBaseNoEliminable entidad, int filaEntidad, String estadoEsperado)
+	private void verificarEstadoEntidad(EntidadBaseNoEliminableConEstado entidad, int filaEntidad, String estadoEsperado)
 	throws Exception{
 		if(columnaEstadoVisible){
 			assertValueInList(filaEntidad, "estado", estadoEsperado);
@@ -218,7 +218,7 @@ public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBa
 		else {
 			long idEntidad = entidad.getId();
 			Class claseEntidad = Class.forName(obtenerNombreCalificadoModulo());
-			EstadoEntidad estadoActualEntidad = EntidadBaseNoEliminable.obtenerEstadoEntidad(claseEntidad, idEntidad);
+			EstadoEntidad estadoActualEntidad = EntidadBaseNoEliminableConEstado.obtenerEstadoEntidad(claseEntidad, idEntidad);
 			
 			assertTrue(estadoActualEntidad.name().equalsIgnoreCase(estadoEsperado));
 		}
@@ -226,7 +226,7 @@ public abstract class EntidadBaseNoEliminableModuleTestBase extends ModuleTestBa
 	
 	protected void borrarEntidadBaseNoEliminableCreadaEnPantalla(
 			String propiedad, String valorPropiedad, 
-			Class<? extends EntidadBaseNoEliminable> claseEntidad)
+			Class<? extends EntidadBaseNoEliminableConEstado> claseEntidad)
 	throws Exception {
 		setValue(propiedad, valorPropiedad);
 		execute("CRUD.refresh");

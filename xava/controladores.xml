@@ -12,6 +12,13 @@
 		<accion nombre="buscarMostrandoAccionBorrado" oculta="true"
 				clase="com.sistemaempresarialox.acciones.general.AccionBuscarMostrandoAccionBorrado"/>
 		
+		<accion nombre="new" 
+			clase="com.sistemaempresarialox.acciones.general.AccionCRUDNew"
+			imagen="new.gif" icono="library-plus"
+			atajo-de-teclado="Control N">
+			<poner propiedad="restoreModel" valor="true"/>
+		</accion>
+		
 		<accion nombre="activar" modo="detail" confirmar="true"
 				clase="com.sistemaempresarialox.acciones.general.AccionActualizarEstadoEntidadNoEliminable"
 				icono="check" oculta="true"
@@ -21,19 +28,18 @@
 				clase="com.sistemaempresarialox.acciones.general.AccionActualizarEstadoEntidadNoEliminable"
 				icono="close" oculta="true"
 				atajo-de-teclado="Control D"/>
-				
-		<accion nombre="deleteSelected" modo="list" confirmar="true"
-				clase="com.sistemaempresarialox.acciones.general.AccionEliminarEntidadesSeleccionadas"
-				atajo-de-teclado="Control D"/>
 		
-		<accion nombre="deleteRow" modo="list" confirmar="true"
-				clase="com.sistemaempresarialox.acciones.general.AccionEliminarEntidadesSeleccionadas"
-				imagen="images/delete.gif"
-				icono="delete"
+		<accion nombre="actualizarEstadoFila" modo="list" confirmar="true"
+				clase="com.sistemaempresarialox.acciones.general.AccionActualizarEstadoEntidadesNoEliminablesSeleccionadas"
+				imagen="images/delete.gif" icono="autorenew" 
 				en-cada-fila="true"/>
+				
+		<accion nombre="actualizarEstadoSeleccionados" modo="list" confirmar="true"
+				clase="com.sistemaempresarialox.acciones.general.AccionActualizarEstadoEntidadesNoEliminablesSeleccionadas"
+				atajo-de-teclado="Control D"/>
 	</controlador>
 	
-	<controlador nombre="EntidadNoEliminable">
+	<controlador nombre="EntidadBaseNoEliminableConEstado">
 		<accion nombre="buscarMostrandoSoloActivos" oculta="true" 
 				clase="com.sistemaempresarialox.acciones.entidadnoeliminable.AccionBusquedadDeReferenciasDeEntidadesSoloActivas"
 				imagen="images/search.gif"
@@ -42,10 +48,10 @@
 	
 	<controlador nombre="Mode">
 		<accion nombre="initList" al-iniciar="true"
-			clase="org.openxava.actions.InitListAction"
+			clase="com.sistemaempresarialox.acciones.mode.AccionIniciarLista"
 			oculta="true"/>
 		<accion nombre="detailAndFirst"
-			clase="com.sistemaempresarialox.acciones.AccionIrADetalle"
+			clase="org.openxava.actions.GoDetailAction"
 			atajo-de-teclado="F8">
 			<poner propiedad="nextAction" valor="Navigation.first"/>
 		</accion>
@@ -57,7 +63,7 @@
 			atajo-de-teclado="F10"/>
 		<accion nombre="detail"
 			oculta="true"
-			clase="com.sistemaempresarialox.acciones.AccionIrADetalle"/>
+			clase="org.openxava.actions.GoDetailAction"/>
 		<accion nombre="initView"
 			clase="org.openxava.actions.SetEditableAction"
 			oculta="true" al-iniciar="true">

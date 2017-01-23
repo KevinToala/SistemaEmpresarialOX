@@ -2,13 +2,9 @@ package com.sistemaempresarialox.acciones.general;
 
 import org.openxava.actions.*;
 
-import com.sistemaempresarialox.base.modelo.*;
-
 import com.sistemaempresarialox.util.*;
-import com.sistemaempresarialox.util.enumeradores.*;
 
-public class AccionBuscarMostrandoAccionBorrado extends SearchByViewKeyAction {
-	
+public class AccionCRUDNew extends NewAction {
 	@Override
 	public void execute() throws Exception {
 		super.execute();
@@ -23,14 +19,7 @@ public class AccionBuscarMostrandoAccionBorrado extends SearchByViewKeyAction {
 			addActions("CRUD.delete");
 		}
 		else {
-			EstadoEntidad estadoEntidad = (EstadoEntidad) getView().getValue(EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO);
-			
-			if(estadoEntidad == EstadoEntidad.ACTIVO){
-				addActions("GeneralSistemaEmpresarialOX.inactivar");
-			}
-			else {
-				addActions("GeneralSistemaEmpresarialOX.activar");
-			}
+			addActions("GeneralSistemaEmpresarialOX.activar");
 		}
 	}
 	

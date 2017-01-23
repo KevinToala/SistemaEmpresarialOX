@@ -11,7 +11,7 @@ import com.sistemaempresarialox.tests.base.*;
 import com.sistemaempresarialox.util.*;
 import com.sistemaempresarialox.util.enumeradores.*;
 
-public class ProvinciaTest extends EntidadBaseNoEliminableModuleTestBase {
+public class ProvinciaTest extends EntidadBaseNoEliminableConEstadoModuleTestBase {
 	private Pais pais1;
 	private Pais pais2;
 	
@@ -36,10 +36,10 @@ public class ProvinciaTest extends EntidadBaseNoEliminableModuleTestBase {
 	}
 
 	@Override
-	protected List<EntidadBaseNoEliminable> crearEntidadesBaseNoEliminable(){
+	protected List<EntidadBaseNoEliminableConEstado> crearEntidadesBaseNoEliminable(){
 		crearPaisesDePrueba();
 		
-		List<EntidadBaseNoEliminable> provincias = new ArrayList<>();
+		List<EntidadBaseNoEliminableConEstado> provincias = new ArrayList<>();
 		
 		Provincia provincia1 = new Provincia();
 		provincia1.setNombre("provincia1");
@@ -97,7 +97,7 @@ public class ProvinciaTest extends EntidadBaseNoEliminableModuleTestBase {
 	}
 
 	private void crearPais() throws Exception {
-		execute("CRUD.new");
+		execute("GeneralSistemaEmpresarialOX.new");
 		setValue("nombre", "provincia prueba");
 		setValue("codigoSistemaTributario", "999");
 		setValue("pais.id", String.valueOf(pais1.getId()));

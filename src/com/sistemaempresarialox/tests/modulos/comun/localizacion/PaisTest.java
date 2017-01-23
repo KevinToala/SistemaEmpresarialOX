@@ -7,7 +7,7 @@ import com.sistemaempresarialox.modulos.comun.localizacion.modelo.*;
 import com.sistemaempresarialox.tests.base.*;
 import com.sistemaempresarialox.util.enumeradores.*;
 
-public class PaisTest extends EntidadBaseNoEliminableModuleTestBase {
+public class PaisTest extends EntidadBaseNoEliminableConEstadoModuleTestBase {
 	public PaisTest(String nombrePrueba){
 		super(nombrePrueba, "Pais");
 	}
@@ -18,8 +18,8 @@ public class PaisTest extends EntidadBaseNoEliminableModuleTestBase {
 	}
 	
 	@Override
-	protected List<EntidadBaseNoEliminable> crearEntidadesBaseNoEliminable(){
-		List<EntidadBaseNoEliminable> paises = new ArrayList<>();
+	protected List<EntidadBaseNoEliminableConEstado> crearEntidadesBaseNoEliminable(){
+		List<EntidadBaseNoEliminableConEstado> paises = new ArrayList<>();
 		
 		Pais pais1 = new Pais();
 		pais1.setNombre("pais1");
@@ -47,7 +47,7 @@ public class PaisTest extends EntidadBaseNoEliminableModuleTestBase {
 	}
 	
 	public void testCrearPais() throws Exception {
-		execute("CRUD.new");
+		execute("GeneralSistemaEmpresarialOX.new");
 		setValue("nombre", "pais de prueba");
 		setValue("codigoISO", "pp");
 		setValue("codigoSistemaTributario", "999");

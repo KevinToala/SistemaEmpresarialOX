@@ -12,7 +12,7 @@ public class EntidadUtil {
 	public static boolean esEntidadEliminable(Class<?> claseDeEntidadAEliminar)
 	throws Exception {
 		Object instanciaDeEntidadAEliminar = claseDeEntidadAEliminar.newInstance();
-		return !(instanciaDeEntidadAEliminar instanceof EntidadBaseNoEliminable);
+		return !(instanciaDeEntidadAEliminar instanceof EntidadBaseNoEliminableConEstado);
 	}
 	
 	public static Class<?> obtenerClassDeEntidad(View view){

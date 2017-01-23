@@ -20,13 +20,13 @@ import com.sistemaempresarialox.base.modelo.*;
 			  "codigoSistemaTributario;" +
 			  "pais;" +
 			  "provincia;" +
-			  EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO
+			  EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO
 )
 @Tab(properties=EntidadBase.NOMBRE_COLUMNA_PRIMARY_KEY + 
 				", nombre, codigoSistemaTributario, provincia.nombre, " +
-				EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO
+				EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO
 )
-public class Ciudad extends EntidadBaseNoEliminable {
+public class Ciudad extends EntidadBaseNoEliminableConEstado {
 	private Pais pais;
 	private Provincia provincia;
 	private String nombre;
@@ -34,7 +34,7 @@ public class Ciudad extends EntidadBaseNoEliminable {
 	
 	@Transient
 	@ManyToOne
-	@DescriptionsList(condition=EntidadBaseNoEliminable.CONDICION_ESTADO_ACTIVO)
+	@DescriptionsList(condition=EntidadBaseNoEliminableConEstado.CONDICION_ESTADO_ACTIVO)
 	@OnChange(AccionAlCambiarPaisEnEntidadCiudad.class)
 	public Pais getPais(){
 		if(pais == null){
@@ -52,7 +52,7 @@ public class Ciudad extends EntidadBaseNoEliminable {
 	@ManyToOne
 	@JoinColumn(name="id_provincia", nullable=false)
 	@DescriptionsList(depends="this.pais",
-					  condition="${pais.id} = ? and " + EntidadBaseNoEliminable.CONDICION_ESTADO_ACTIVO)
+					  condition="${pais.id} = ? and " + EntidadBaseNoEliminableConEstado.CONDICION_ESTADO_ACTIVO)
 	public Provincia getProvincia(){
 		return provincia;
 	}

@@ -10,7 +10,7 @@ import com.sistemaempresarialox.calculadores.*;
 import com.sistemaempresarialox.util.enumeradores.*;
 
 @MappedSuperclass
-public abstract class EntidadBaseNoEliminable extends EntidadBase {
+public abstract class EntidadBaseNoEliminableConEstado extends EntidadBase {
 	public final static String NOMBRE_COLUMNA_ESTADO = "estado";
 	public final static String CONDICION_ESTADO_ACTIVO =
 			"${" + NOMBRE_COLUMNA_ESTADO + "} = '" + EstadoEntidad.STRING_ACTIVO + "'";

@@ -1,4 +1,4 @@
-package com.sistemaempresarialox.acciones.entidadnoeliminable;
+package com.sistemaempresarialox.acciones.entidadBaseNoEliminableConEstado;
 
 import org.openxava.actions.*;
 
@@ -14,7 +14,7 @@ public class AccionBusquedadDeReferenciasDeEntidadesSoloActivas extends Referenc
 		Class claseEntidad = EntidadUtil.obtenerClassDeEntidad(getTab());
 		
 		if(!EntidadUtil.esEntidadEliminable(claseEntidad)){
-			getTab().setBaseCondition(EntidadBaseNoEliminable.CONDICION_ESTADO_ACTIVO);
+			getTab().setBaseCondition(EntidadBaseNoEliminableConEstado.CONDICION_ESTADO_ACTIVO);
 		}
 	}
 }

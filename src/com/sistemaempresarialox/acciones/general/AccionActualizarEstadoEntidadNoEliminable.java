@@ -27,7 +27,7 @@ public class AccionActualizarEstadoEntidadNoEliminable extends ViewBaseAction {
 	private void actualizarEstadoEntidad(Class claseEntidadAEliminar) throws Exception {
 		long idEntidad = (long) getView().getValue(EntidadBase.NOMBRE_COLUMNA_PRIMARY_KEY);
 		EstadoEntidad estadoEntidadActual = 
-				EntidadBaseNoEliminable.obtenerEstadoEntidad(claseEntidadAEliminar, idEntidad);
+				EntidadBaseNoEliminableConEstado.obtenerEstadoEntidad(claseEntidadAEliminar, idEntidad);
 
 		EstadoEntidad nuevoEstado = null;
 		String idMensajeCambioEstado = "";
@@ -47,7 +47,7 @@ public class AccionActualizarEstadoEntidadNoEliminable extends ViewBaseAction {
 	private void setearEstadoEntidad(EstadoEntidad nuevoEstado, String idMensajeCambioEstado)
 	throws Exception {
 		Map valores = new HashMap();
-		valores.put(EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO, nuevoEstado);
+		valores.put(EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO, nuevoEstado);
 		
 		MapFacade.setValues(getModelName(), getView().getKeyValues(), valores);
 		

@@ -21,13 +21,13 @@ import com.sistemaempresarialox.base.modelo.*;
 @View(members=EntidadBase.NOMBRE_COLUMNA_PRIMARY_KEY + ";" +
 			  "nombre;" +
 			  "codigoISO, codigoSistemaTributario;" +
-			  EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO
+			  EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO
 )
 @Tab(properties=EntidadBase.NOMBRE_COLUMNA_PRIMARY_KEY + 
 				", nombre, codigoISO, codigoSistemaTributario, " +
-				EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO
+				EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO
 )
-public class Pais extends EntidadBaseNoEliminable {
+public class Pais extends EntidadBaseNoEliminableConEstado {
 	private String nombre;
 	private String codigoISO;
 	private int codigoSistemaTributario;

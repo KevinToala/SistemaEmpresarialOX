@@ -21,7 +21,7 @@ import com.sistemaempresarialox.base.modelo.*;
 			  "nombre;" +
 			  "codigoSistemaTributario;" +
 			  "pais;" +
-			  EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO
+			  EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO
 	),
 	@View(name="IdPaisYNombreDeProvincia",
 		  members="id;" +
@@ -30,9 +30,9 @@ import com.sistemaempresarialox.base.modelo.*;
 })
 @Tab(properties=EntidadBase.NOMBRE_COLUMNA_PRIMARY_KEY + 
 				", nombre, codigoSistemaTributario, pais.nombre, " +
-				EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO
+				EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO
 )
-public class Provincia extends EntidadBaseNoEliminable {
+public class Provincia extends EntidadBaseNoEliminableConEstado {
 	private Pais pais;
 	private String nombre;
 	private int codigoSistemaTributario;

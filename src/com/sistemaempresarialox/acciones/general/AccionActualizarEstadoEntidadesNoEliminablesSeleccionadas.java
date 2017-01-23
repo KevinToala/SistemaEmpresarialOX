@@ -13,7 +13,10 @@ import com.sistemaempresarialox.util.*;
 import com.sistemaempresarialox.util.enumeradores.*;
 
 @SuppressWarnings("rawtypes")
-public class AccionEliminarEntidadesSeleccionadas extends TabBaseAction implements IChainAction {
+public class AccionActualizarEstadoEntidadesNoEliminablesSeleccionadas 
+	extends TabBaseAction
+	implements IChainAction
+{
 	private static final int INDICE_COLUMNA_ESTADO_NO_ENCONTRADA = -1;
 	
 	private String siguienteAccion = null;
@@ -24,16 +27,7 @@ public class AccionEliminarEntidadesSeleccionadas extends TabBaseAction implemen
 	public void execute() throws Exception {
 		tab = getTab();
 		claseEntidadAEliminar = getView().getMetaModel().getPOJOClass();
-		
-		if (EntidadUtil.esEntidadEliminable(claseEntidadAEliminar)){
-			siguienteAccion = "CRUD.deleteSelected";
-			/* TODO Al dar clic en la accion de borrar un registro este no se borra
-			 * 		si el registro no esta marcado con el check, esto solo sucede cuando se utiliza IChainAction
-			 */
-		}
-		else {
-			actualizarEstadoDeEntidadesSeleccionadas();
-		}
+		actualizarEstadoDeEntidadesSeleccionadas();
 	}
 	
 	@Override
@@ -51,7 +45,7 @@ public class AccionEliminarEntidadesSeleccionadas extends TabBaseAction implemen
 			EstadoEntidad actualEstadoEntidad = obtenerActualEstadoEntidad(fila, indiceColumnaEstado, idEntidadDeFila);
 			EstadoEntidad nuevoEstadoEntidad = obtenerNuevoEstadoEntidad(actualEstadoEntidad);
 			
-			valores.put(EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO, nuevoEstadoEntidad);
+			valores.put(EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO, nuevoEstadoEntidad);
 			
 			try {
 				MapFacade.setValues(tab.getModelName(), idEntidadDeFila, valores);
@@ -75,7 +69,7 @@ public class AccionEliminarEntidadesSeleccionadas extends TabBaseAction implemen
 		List<MetaProperty> metaPropiedades = tab.getMetaProperties();
 		
 		for(int indice = 0 ; indice < metaPropiedades.size() ; indice++){
-			if(metaPropiedades.get(indice).getName().equals(EntidadBaseNoEliminable.NOMBRE_COLUMNA_ESTADO)){
+			if(metaPropiedades.get(indice).getName().equals(EntidadBaseNoEliminableConEstado.NOMBRE_COLUMNA_ESTADO)){
 				indiceColumnaEstado = indice;
 			}
 		}
@@ -92,7 +86,7 @@ public class AccionEliminarEntidadesSeleccionadas extends TabBaseAction implemen
 		}
 		else {
 			long idEntidad = obtenerIdEntidad(mapIdEntidad);
-			actualEstadoEntidad = EntidadBaseNoEliminable.obtenerEstadoEntidad(claseEntidadAEliminar, idEntidad);
+			actualEstadoEntidad = EntidadBaseNoEliminableConEstado.obtenerEstadoEntidad(claseEntidadAEliminar, idEntidad);
 		}
 		
 		return actualEstadoEntidad;
