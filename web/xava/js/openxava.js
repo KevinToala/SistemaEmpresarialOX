@@ -2,6 +2,7 @@ if (openxava == null) var openxava = {};
 openxava.deselected = [];
 
 openxava.init = function(application, module) {
+	openxava.initWindowId(); 
 	document.onkeydown = openxava.processKey;
 	openxava.initUI(application, module);	
 	openxava.editorsInitFunctionsClosed = true; 
@@ -118,7 +119,9 @@ openxava.refreshPage = function(result) {
 			dialog.attr("module", result.module);
 			dialog.dialog('option', 'title', result.dialogTitle);
 			dialog.dialog('option', 'width', 'auto');
-			dialog.dialog('option', 'width', dialog.parent().width());
+			var maxWidth = $(window).width() * 0.95; 
+			var width = dialog.parent().width();
+			dialog.dialog('option', 'width', Math.min(width, maxWidth));
 			dialog.dialog('option', 'height', 'auto');
 			dialog.dialog('option', 'position', { my: "center", at: "center", of: window, collision: "fit" } ); 			
 			dialog.dialog('option', 'zIndex', 99999 );
@@ -182,6 +185,14 @@ openxava.initStrokeActions = function(application, module) {
 
 openxava.initBeforeShowDialog = function() { 
 	$("#xava_add_columns").css("max-height", $(window).height() * 0.7); 
+}
+
+openxava.initWindowId = function() { 
+	$(window).bind('beforeunload',function(){
+		document.cookie = "XAVA_WINDOW_ID=" + $("#xava_window_id").val(); 
+	});		
+	document.cookie="XAVA_WINDOW_ID=";   
+	dwr.engine.setHeaders({ xava_window_id: $("#xava_window_id").val() }); 
 }
 
 openxava.selectRows = function(application, module, selectedRows) { 

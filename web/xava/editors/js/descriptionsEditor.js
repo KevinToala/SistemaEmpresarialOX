@@ -23,7 +23,7 @@ openxava.addEditorInitFunction(function() {
 					$(event.target).next().next().val("");
 					descriptionsEditor.executeOnChange($(event.target));
 				}
-				else if ($(event.target).val() !== $(event.target).next().next().val()){ 
+				else if ($(event.target).val() !== $(event.target).next().next().val()){
 					$(event.target).val("");
 					$(event.target).next().val("");
 					$(event.target).next().next().val("");
@@ -35,7 +35,12 @@ openxava.addEditorInitFunction(function() {
 			},
 			close: function( event, ui ) {
 				$(event.target).next().next().next().next().hide();
-				$(event.target).next().next().next().show();
+				$(event.target).next().next().next().show();	
+				if ($(event.target).val() !== $(event.target).next().next().val()) {
+					// To work clicking outside combo after mouse hover in plain view and dialog
+					if ($(event.target).val() === "") $(event.target).val("");
+					else $(event.target).val($(event.target).next().next().val()); 
+				}				
 			},
 			appendTo: "body"
 		}); 	
@@ -55,6 +60,7 @@ descriptionsEditor.close = function(id) {
 }
 
 descriptionsEditor.executeOnChange = function(element) {
+	$(element).parent().trigger("change"); 
 	var onchange = element.attr("onchange");
 	if (typeof onchange == 'undefined') return;
 	eval(onchange);

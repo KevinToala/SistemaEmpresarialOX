@@ -9,7 +9,6 @@ import org.openxava.tab.*;
 import org.openxava.validators.*;
 
 import com.sistemaempresarialox.base.modelo.*;
-import com.sistemaempresarialox.util.*;
 import com.sistemaempresarialox.util.enumeradores.*;
 
 @SuppressWarnings("rawtypes")

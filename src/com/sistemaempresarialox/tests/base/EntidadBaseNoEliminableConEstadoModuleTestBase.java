@@ -33,7 +33,6 @@ public abstract class EntidadBaseNoEliminableConEstadoModuleTestBase extends Mod
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		
 		List<EntidadBaseNoEliminableConEstado> entidades = crearEntidadesBaseNoEliminable();
 		
 		if(entidades.isEmpty() || entidades.size() < 3){
@@ -224,7 +223,7 @@ public abstract class EntidadBaseNoEliminableConEstadoModuleTestBase extends Mod
 		}
 	}
 	
-	protected void borrarEntidadBaseNoEliminableCreadaEnPantalla(
+	protected void borrarEntidadBaseNoEliminableConEstadoCreadaEnPantalla(
 			String propiedad, String valorPropiedad, 
 			Class<? extends EntidadBaseNoEliminableConEstado> claseEntidad)
 	throws Exception {

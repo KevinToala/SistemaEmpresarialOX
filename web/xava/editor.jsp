@@ -1,15 +1,17 @@
 <%@ include file="imports.jsp"%>
 
-
-<%@page import="org.openxava.util.XavaPreferences"%>
-<%@page import="org.openxava.util.Is"%>
 <jsp:useBean id="errors" class="org.openxava.util.Messages" scope="request"/>
 <jsp:useBean id="context" class="org.openxava.controller.ModuleContext" scope="session"/>
 <jsp:useBean id="style" class="org.openxava.web.style.Style" scope="request"/>
 
-
+<%@ page import="org.openxava.util.XavaPreferences" %>
+<%@ page import="org.openxava.util.Is" %>
 <%@ page import="org.openxava.model.meta.MetaProperty" %>
 <%@ page import="org.openxava.view.meta.MetaPropertyView" %>
+
+<% if (XavaPreferences.getInstance().isDivForEachEditor()) { %>
+<div>  
+<% } %>
 
 <%
 String viewObject = request.getParameter("viewObject");
@@ -79,3 +81,8 @@ if (labelFormat == MetaPropertyView.SMALL_LABEL) {
 <% } %>
 
 <% } // if (!hasFrame) %>
+
+<% if (XavaPreferences.getInstance().isDivForEachEditor()) { %>
+</div>  
+<% } %>
+

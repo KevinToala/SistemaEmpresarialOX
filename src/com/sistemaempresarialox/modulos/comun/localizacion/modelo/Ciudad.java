@@ -44,7 +44,7 @@ public class Ciudad extends EntidadBaseNoEliminableConEstado {
 		return pais;
 	}
 
-	public void setPais(Pais pais) {
+	public void setPais(Pais pais){
 		this.pais = pais;
 	}
 

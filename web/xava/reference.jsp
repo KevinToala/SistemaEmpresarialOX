@@ -15,6 +15,10 @@
 <jsp:useBean id="context" class="org.openxava.controller.ModuleContext" scope="session"/>
 <jsp:useBean id="style" class="org.openxava.web.style.Style" scope="request"/>
 
+<% if (XavaPreferences.getInstance().isDivForEachEditor()) { %>
+<div>  
+<% } %>
+
 <%
 boolean onlyEditor = "true".equalsIgnoreCase(request.getParameter("onlyEditor"));
 boolean frame = "true".equalsIgnoreCase(request.getParameter("frame")); 
@@ -25,11 +29,12 @@ viewObject = (viewObject == null || viewObject.equals(""))?"xava_view":viewObjec
 org.openxava.view.View view = (org.openxava.view.View) context.get(request, viewObject);
 String referenceKey = request.getParameter("referenceKey");
 MetaReference ref = (MetaReference) request.getAttribute(referenceKey);
+String refViewObject = request.getParameter("refViewObject");
+if (Is.emptyString(refViewObject)) refViewObject = viewObject; 
 String labelKey = "xava_label_" + referenceKey;
 if (!descriptionsList) descriptionsList = view.displayAsDescriptionsList(ref);
-boolean descriptionsListAndReferenceView = descriptionsList || !composite?false:view.displayAsDescriptionsListAndReferenceView(); 
+boolean descriptionsListAndReferenceView = descriptionsList || !composite?false:view.displayAsDescriptionsListAndReferenceView(ref);
 if (descriptionsListAndReferenceView) {
-	view = view.getParent(); 
 	composite = false;
 }
 %>
@@ -38,7 +43,7 @@ if (descriptionsListAndReferenceView) {
 
 <%
 String editableKey = referenceKey + "_EDITABLE_";
-boolean editable = view.isEditable(ref);
+boolean editable = view.isEditable(ref.getName()); 
 int labelFormat = view.getLabelFormatForReference(ref);
 String labelStyle = view.getLabelStyleForReference(ref);
 if (Is.empty(labelStyle)) labelStyle = XavaPreferences.getInstance().getDefaultLabelStyle();
@@ -176,7 +181,8 @@ if (descriptionsList || descriptionsListAndReferenceView) {
 	<% 
 	String editorURL = "editors/" + WebEditors.getMetaEditorFor(ref, view.getViewName()).getUrl()
 		+ "?script=" + script
-		+ "&propertyKey=" + propertyKey	
+		+ "&propertyKey=" + propertyKey
+		+ "&viewObject=" + refViewObject 
 		+ "&editable=false";
 	%>
 	<jsp:include page="<%=editorURL%>" />	
@@ -188,7 +194,8 @@ if (descriptionsList || descriptionsListAndReferenceView) {
 else {
 	String editorURL = "editors/" + WebEditors.getMetaEditorFor(ref, view.getViewName()).getUrl()
 		+ "?script=" + script
-		+ "&propertyKey=" + propertyKey	
+		+ "&propertyKey=" + propertyKey
+		+ "&viewObject=" + refViewObject 
 		+ "&editable=" + editable;
 %>
 	<jsp:include page="<%=editorURL%>" />
@@ -208,3 +215,8 @@ if (!onlyEditor) {
 %>	
 	<%=postEditor%>
 <%}%>
+
+<% if (XavaPreferences.getInstance().isDivForEachEditor()) { %>
+</div>  
+<% } %>
+

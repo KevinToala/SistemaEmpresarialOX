@@ -44,12 +44,14 @@
 <jsp:useBean id="context" class="org.openxava.controller.ModuleContext" scope="session"/>
 <jsp:useBean id="style" class="org.openxava.web.style.Style" scope="request"/>
 <%
+	String windowId = context.getWindowId(request);
+	context.setCurrentWindowId(windowId);	
 	Locales.setCurrent(request);	
 	request.getSession().setAttribute("xava.user",
 			request.getRemoteUser());
 	Users.setCurrent(request); 
 	String app = request.getParameter("application");
-	String module = context.getCurrentModule(request); 
+	String module = context.getCurrentModule(request);
 	String contextPath = (String) request.getAttribute("xava.contextPath");
 	if (contextPath == null) contextPath = request.getContextPath();
 
@@ -81,6 +83,7 @@
 	String version = org.openxava.controller.ModuleManager.getVersion();
 	String realPath = request.getSession().getServletContext()
 			.getRealPath("/");			
+	manager.resetPersistence(); 
 %>
 <jsp:include page="execute.jsp"/>
 <%
@@ -217,6 +220,7 @@ if (manager.isResetFormPostNeeded()) {
 	</form>
 <% } else  { %>	
 	<input id="xava_last_module_change" type="hidden" value=""/>
+	<input id="xava_window_id" type="hidden" value="<%=windowId%>"/>	
 	<input id="<xava:id name='loading'/>" type="hidden" value="<%=coreViaAJAX%>"/>
 	<input id="<xava:id name='loaded_parts'/>" type="hidden" value=""/>
 	<input id="<xava:id name='view_member'/>" type="hidden" value=""/>
@@ -312,4 +316,5 @@ document.additionalParameters="<%=getAdditionalParameters(request)%>";
 </script>
 <% }
 manager.commit();
+context.cleanCurrentWindowId(); 
 %>

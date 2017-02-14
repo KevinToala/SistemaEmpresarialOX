@@ -54,7 +54,7 @@ public class PaisTest extends EntidadBaseNoEliminableConEstadoModuleTestBase {
 		execute("CRUD.save");
 		assertNoErrors();
 		
-		borrarEntidadBaseNoEliminableCreadaEnPantalla(
+		borrarEntidadBaseNoEliminableConEstadoCreadaEnPantalla(
 				"nombre", "pais de prueba", Pais.class);
 	}
 }

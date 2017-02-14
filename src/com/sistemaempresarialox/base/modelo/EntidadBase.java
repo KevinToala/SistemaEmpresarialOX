@@ -16,7 +16,7 @@ public abstract class EntidadBase {
 	@NotNull
 	@Column(name=NOMBRE_COLUMNA_PRIMARY_KEY, nullable=false)
 	@TableGenerator(name="generadorTablasSistemaEmpresarialOX", 
-					schema="general", table="secuencias_id_tabla",
+					schema="general", table="secuencias_id_tablas",
 					pkColumnName="tabla", valueColumnName="secuencia_id",
 					uniqueConstraints=@UniqueConstraint(columnNames={"tabla"}),
 					initialValue=1, allocationSize=1)

@@ -74,6 +74,9 @@ boolean resizeColumns = style.allowsResizeColumns() && tab.isResizeColumns();
 String browser = request.getHeader("user-agent");
 boolean scrollSupported = !(browser != null && (browser.indexOf("MSIE 6") >= 0 || browser.indexOf("MSIE 7") >= 0));
 String styleOverflow = org.openxava.web.Lists.getOverflow(browser, tab.getMetaProperties());
+boolean sortable = !Is.emptyString(collection) && view.isRepresentsSortableCollection();  
+boolean simple = sortable;
+if (simple) filter = false; 
 %>
 
 <input type="hidden" name="xava_list<%=tab.getTabName()%>_filter_visible"/>
@@ -127,6 +130,7 @@ if (tab.isTitleVisible()) {
 <div class="<xava:id name='<%=scrollId%>'/>" style="<%=styleOverflow%>">
 <% } %> 
 <table id="<xava:id name='<%=id%>'/>" class="xava_sortable_column <%=style.getList()%>" <%=style.getListCellSpacing()%> style="<%=style.getListStyle()%>">
+<% if (sortable) { %><tbody class="xava_sortable_row"><% } %> 
 <tr class="<%=style.getListHeader()%>">
 <th class="<%=style.getListHeaderCell()%>" style="text-align: center">
 <nobr>
@@ -138,12 +142,14 @@ if (tab.isTitleVisible()) {
 		if (tab.isCustomizeAllowed()) { 
 	%>
 	<span class="<xava:id name='<%="customize_" + id%>'/>" style="display: none;">
+	<% if (filter) { %> 
 	<a id="<xava:id name='<%="show_filter_" + id%>'/>" style='display: <%=tab.isFilterVisible()?"none":""%>' href="javascript:openxava.setFilterVisible('<%=request.getParameter("application")%>', '<%=request.getParameter("module")%>', '<%=id%>', '<%=tabObject%>', true)" title="<xava:message key='show_filters'/>">
 		<i id="<xava:id name='<%="filter_image_" + id%>'/>" class="mdi mdi-filter"></i>
 	</a>
 	<a id="<xava:id name='<%="hide_filter_" + id%>'/>" style='display: <%=tab.isFilterVisible()?"":"none"%>' href="javascript:openxava.setFilterVisible('<%=request.getParameter("application")%>', '<%=request.getParameter("module")%>', '<%=id%>', '<%=tabObject%>', false)" title="<xava:message key='hide_filters'/>">
 		<i id="<xava:id name='<%="filter_image_" + id%>'/>" class="mdi mdi-filter-remove"></i>  
 	</a>	
+	<% } // if (filter) %> 
 	<xava:image action="List.addColumns" argv="<%=collectionArgv%>"/>
 	</span>	
 	<%
@@ -194,7 +200,7 @@ while (it.hasNext()) {
 <%
 	String label = property.getQualifiedLabel(request);
 	if (resizeColumns) label = label.replaceAll(" ", "&nbsp;");
-	if (property.isCalculated()) {
+	if (property.isCalculated() || sortable) { 
 %>
 <%=label%>&nbsp;
 <%
@@ -388,7 +394,8 @@ else {
 IXTableModel model = tab.getTableModel(); 
 totalSize = totalSize < 0?tab.getTotalSize():totalSize; 
 if (totalSize > 0) {
-for (int f=tab.getInitialIndex(); f<model.getRowCount() && f < tab.getFinalIndex(); f++) {
+int finalIndex = simple?Integer.MAX_VALUE:tab.getFinalIndex();
+for (int f=tab.getInitialIndex(); f<model.getRowCount() && f < finalIndex; f++) {
 	String checked=tab.isSelected(f)?"checked='true'":"";	
 	String cssClass=f%2==0?style.getListPair():style.getListOdd();	
 	String cssCellClass=f%2==0?style.getListPairCell():style.getListOddCell(); 
@@ -408,6 +415,9 @@ for (int f=tab.getInitialIndex(); f<model.getRowCount() && f < tab.getFinalIndex
 <tr id="<%=prefixIdRow%><%=f%>" class="<%=cssClass%>" <%=events%> style="<%=rowStyle%>">
 	<td class="<%=cssCellClass%>" style="vertical-align: middle;text-align: center; <%=style.getListCellStyle()%>">
 	<%if (resizeColumns) {%><nobr><%}%> 
+	<%if (sortable) { %>
+	<i class="xava_handle mdi mdi-swap-vertical"></i>	
+	<%}%>	
 <%
 	if (!org.openxava.util.Is.emptyString(action)) { 
 %>
@@ -589,12 +599,13 @@ if (lastRow != null) {
 <%
 }
 %>
+<% if (sortable) { %></tbody><% } %> 
 </table>
 <% if (resizeColumns && scrollSupported) { %>
 </div> 
 <% } %>
 
-<% if (!tab.isRowsHidden()) { %>
+<% if (!tab.isRowsHidden() && !simple) { %>
 <table width="100%" class="<%=style.getListInfo()%>" cellspacing=0 cellpadding=0>
 <tr class='<%=style.getListInfoDetail()%>'>
 <td class='<%=style.getListInfoDetail()%>'>

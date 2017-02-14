@@ -2,6 +2,7 @@
 
 <%@ page import="java.util.Iterator" %>
 <%@ page import="org.openxava.view.View" %>
+<%@ page import="org.openxava.util.XavaPreferences" %>
 <%@ page import="org.openxava.view.meta.MetaGroup" %>
 <%@ page import="org.openxava.view.meta.PropertiesSeparator" %>
 <%@ page import="org.openxava.model.meta.MetaProperty" %>
@@ -28,12 +29,24 @@ private boolean hasFrame(MetaMember m, View view) {
   	return true;
 }
 
+private String openDivForFrame(View view) { 
+	if (view.isFrame()) return openDiv(view);
+	return "<div>" + openDiv(view);
+}
+
+private String closeDivForFrame(View view) { 
+	if (view.isFrame()) return closeDiv(view);
+	return closeDiv(view) + "</div>";
+}
+
 private String openDiv(View view) {
+	if (XavaPreferences.getInstance().isDivForEachEditor()) return ""; 
 	return view.isFrame()?"<div class='ox-layout-detail'>":""; 
 }
 
 private String closeDiv(View view) {
-	return view.isFrame()?"</div>":""; 
+	if (XavaPreferences.getInstance().isDivForEachEditor()) return ""; 
+	return view.isFrame()?"</div>":"";
 }
 %>
 
@@ -45,7 +58,7 @@ view.setViewObject(viewObject);
 String propertyPrefix = request.getParameter("propertyPrefix");
 String representsSection = request.getParameter("representsSection");
 boolean isSection = "true".equalsIgnoreCase(representsSection);
-propertyPrefix = (propertyPrefix == null)?"":propertyPrefix; 
+propertyPrefix = (propertyPrefix == null || "null".equals(propertyPrefix))?"":propertyPrefix; 
 view.setPropertyPrefix(propertyPrefix);
 boolean onlySections = view.hasSections() && view.getMetaMembers().isEmpty(); 
 %>
@@ -88,7 +101,7 @@ if (!renderedView) {
 						"label_" + propertyPrefix + p.getName()); 
 					String label = view.getLabelFor(p);
 %>
-			<%=closeDiv(view)%>					 
+			<%=closeDivForFrame(view)%> 
 			<%=style.getFrameHeaderStartDecoration(frameWidth) %>
 			<%=style.getFrameTitleStartDecoration() %>
 			<span id="<%=labelKey%>"><%=label%></span>		
@@ -111,7 +124,7 @@ if (!renderedView) {
 				if (withFrame) { // IF MetaProperty With Frame
 %>
 			<%=style.getFrameContentEndDecoration() %>
-			<%=openDiv(view)%>		
+			<%=openDivForFrame(view)%> 		
 <%
 				} // END IF MetaProperty With Frame		
 				first = false;
@@ -132,7 +145,7 @@ if (!renderedView) {
 						request.getParameter("module"),
 						propertyPrefix +  ref.getName()); 
 				request.setAttribute(referenceKey, ref);
-				if (view.displayReferenceWithNoFrameEditor(ref)) { // IF Display Reference Without Frame	
+				if (view.displayReferenceWithNoFrameEditor(ref)) { // IF Display Reference Without Frame
 					String urlReferenceEditor = "reference.jsp" // in this way because websphere 6 has problems with jsp:param
 						+ "?referenceKey=" + referenceKey		
 						+ "&first=" + first
@@ -142,7 +155,7 @@ if (!renderedView) {
 <%
 					first = false;		
 				} // END IF Display MetaReference Without Frame
-				else {	// IF Display MeteReference With Frame			
+				else {	// IF Display MeteReference With Frame
 					String viewName = viewObject + "_" + ref.getName();
 					View subview = view.getSubview(ref.getName());
 					context.put(request, viewName, subview);
@@ -157,7 +170,7 @@ if (!renderedView) {
 							"label_" + propertyPrefix + ref.getName()); 
 						String label = view.getLabelFor(ref);
 %>				
-		<%=closeDiv(view)%>
+		<%=closeDivForFrame(view)%> 
 		<%=style.getFrameHeaderStartDecoration(frameWidth) %>
 		<%=style.getFrameTitleStartDecoration() %>
 		<span id="<%=labelKey%>"><%=label%></span>
@@ -169,7 +182,8 @@ if (!renderedView) {
 							"&closed=" + view.isFrameClosed(frameId); 		
 %>
 		<jsp:include page='<%=frameActionsURL%>'/>
-		<%=style.getFrameActionsEndDecoration()%> 					 					
+		<%=style.getFrameActionsEndDecoration()%> 		
+		<%@ include file="referenceFrameHeaderExt.jsp"%>				 					
 		<%=style.getFrameHeaderEndDecoration() %>
 		<%=style.getFrameContentStartDecoration(frameId + "content", view.isFrameClosed(frameId)) %>						
 <%		
@@ -182,11 +196,11 @@ if (!renderedView) {
 							+ "&onlyEditor=true&frame=true&composite=false"		
 							+ "&first=" + first;				
 					} // END IF Display Reference Without Composite Editor
-					else { // IF Display Reference With Composite Editor
+					else { // IF Display Reference With Composite Editor						
 						urlReferenceEditor = "reference.jsp" // in this way because websphere 6 has problems with jsp:param
 							+ "?referenceKey=" + referenceKey
 							+ "&onlyEditor=true&frame=true&composite=true"  
-							+ "&viewObject=" + viewName					
+							+ "&refViewObject=" + viewName  
 							+ "&propertyPrefix=" + propertyInReferencePrefix 
 							+ "&first=" + firstForSubdetail;
 					} // END IF Display Reference With Composite Editor		
@@ -196,7 +210,7 @@ if (!renderedView) {
 					if (withFrame) { // IF MetaReference With Frame
 %>			
 		<%=style.getFrameContentEndDecoration() %>
-		<%=openDiv(view)%>		
+		<%=openDivForFrame(view)%> 
 <%
 					} // END IF MetaReference With Frame
 				} // END Display MetaReference With Frame
@@ -205,18 +219,12 @@ if (!renderedView) {
 				MetaCollection collection = (MetaCollection) m;			
 				boolean withFrame = !view.isSection() || view.getMetaMembers().size() > 1;
 				boolean variousCollectionInLine = view.isVariousCollectionsInSameLine((MetaMember) m);
-				boolean firstCollectionInLine = view.isFirstInLine((MetaMember) m);
-				String styleCollectionTogether = 
-					!variousCollectionInLine ? "" : 
-					(firstCollectionInLine ? "float: left; " : "float: right; ") + 
-					"overflow: auto; display: block ; border: 1px solid black; width: 49%; ";
 %>
-			<%=closeDiv(view)%>
-			<div style="<%=styleCollectionTogether %>">
-<%			
+			<%=closeDivForFrame(view)%> 
+<%					
 				if (withFrame) { // IF MetaCollection With Frame
 %>	
-				<%=style.getFrameHeaderStartDecoration(frameWidth)%>
+				<%=style.getFrameHeaderStartDecoration(variousCollectionInLine?50:frameWidth)%>
 				<%=style.getFrameTitleStartDecoration()%>
 				<%=collection.getLabel(request) %>
 <% 
@@ -236,7 +244,8 @@ if (!renderedView) {
 					"&closed=" + view.isFrameClosed(frameId);
 %>
 				<jsp:include page='<%=frameActionsURL%>'/>
-				<%=style.getFrameActionsEndDecoration()%> 					 					
+				<%=style.getFrameActionsEndDecoration()%> 	
+				<%@ include file="collectionFrameHeaderExt.jsp"%>				 					
 				<%=style.getFrameHeaderEndDecoration()%>
 				<%=style.getFrameContentStartDecoration(frameId + "content", view.isFrameClosed(frameId))%>
 <%
@@ -258,8 +267,7 @@ if (!renderedView) {
 <%
 				} // END IF MetaCollection With Frame
 %>
-			</div>
-			<%=openDiv(view)%>
+			<%=openDivForFrame(view)%> 
 <%
 			} else if (m instanceof MetaGroup) { // IF MetaGroup
 				MetaGroup group = (MetaGroup) m;			
@@ -267,7 +275,7 @@ if (!renderedView) {
 				View subview = view.getGroupView(group.getName());			
 				context.put(request, viewName, subview);
 %>
-			<%=closeDiv(view)%>
+			<%=closeDivForFrame(view)%> 
 			<%=style.getFrameHeaderStartDecoration(frameWidth)%>
 			<%=style.getFrameTitleStartDecoration()%>
 			<% String labelId = Ids.decorate(request, "label_" + view.getPropertyPrefix() + group.getName()); %>
@@ -287,7 +295,7 @@ if (!renderedView) {
 				<jsp:param name="viewObject" value="<%=viewName%>" />
 			</jsp:include>
 			<%=style.getFrameContentEndDecoration() %>
-			<%=openDiv(view)%>
+			<%=openDivForFrame(view)%> 
 <%
 			} // END IF MetaGroup
 		} // END IF Not MetaProperty

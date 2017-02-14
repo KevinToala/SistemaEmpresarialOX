@@ -89,17 +89,17 @@ public class ProvinciaTest extends EntidadBaseNoEliminableConEstadoModuleTestBas
 	}
 	
 	public void testCrearYModificarProvincia() throws Exception {
-		crearPais();
+		crearProvincia();
 		cambiarPaisDeProvincia();
 		
-		borrarEntidadBaseNoEliminableCreadaEnPantalla(
+		borrarEntidadBaseNoEliminableConEstadoCreadaEnPantalla(
 				"nombre", "provincia prueba", Provincia.class);
 	}
 
-	private void crearPais() throws Exception {
+	private void crearProvincia() throws Exception {
 		execute("GeneralSistemaEmpresarialOX.new");
 		setValue("nombre", "provincia prueba");
-		setValue("codigoSistemaTributario", "999");
+		setValue("codigoSistemaTributario", "99");
 		setValue("pais.id", String.valueOf(pais1.getId()));
 		execute("CRUD.save");
 		assertNoErrors();

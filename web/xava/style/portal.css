@@ -222,6 +222,12 @@ TD.list-title {
 	display: inline;
 }
 
+.results-header .mdi-close-circle {
+	position: absolute;
+	right: 0px;
+	padding-right: 10px;
+}
+
 .liferay-xava-cell-wrapper {
 	border: 1px solid #CCCCCC;
 }
@@ -555,6 +561,13 @@ span.ox-subcontroller-select a{
 	border: 1px solid #A7CEDF !important;
 }
 
+.ox-element-collection .form-text { 
+	width: 100%; 
+	box-sizing: border-box; 
+	-moz-box-sizing: border-box; 
+	-webkit-box-sizing: border-box;
+}
+
 .ox-charts {
 	width: 0px;
 }
@@ -768,14 +781,14 @@ input[type="radio"] {
     z-index: 9999999999 !important;  
  }
  
-.ui-autocomplete-input::-ms-clear, .ox-date-calendar ::-ms-clear  {  
+.ui-autocomplete-input::-ms-clear, .ox-date-calendar ::-ms-clear, .ox-web-url ::-ms-clear {   
  	display: none; 
  }
  
- .ui-menu-item:hover, .ui-widget-content .ui-state-focus {
+.ui-menu-item:hover, .ui-widget-content .ui-state-focus {
  	border-color: #DFF4FF !important; 
  	background: #DFF4FF !important;
- }
+}
  
 .ox-descriptions-list i {
  	position: relative; 
@@ -783,6 +796,15 @@ input[type="radio"] {
  	top: -1px;
  	margin-right: -26px; 	
  	padding: 5px;
+}
+
+.ox-element-collection .ox-descriptions-list input {
+ 	position: relative; 
+ 	top: 1px;
+}
+
+span[id*="reference_editor"] + .ox-layout-detail {
+	margin-top: 4px;
 }
 
 .ox-icon i {
@@ -906,4 +928,22 @@ a.cke_button_disabled:hover, a.cke_button_disabled:focus, a.cke_button_disabled:
 	display: flex;
     justify-content: center;
     height: 0px;
+}
+
+.ox-money b {
+	width: 0px; 
+	position: relative;
+	left: 5px;
+	top: 5px;
+	float: left; 
+}
+
+.ox-two-collections-in-a-row {
+	overflow: auto; 
+	display: block; 
+	width: calc(50% - 16px);
+}
+
+.results-header span {
+	display: initial;
 }
